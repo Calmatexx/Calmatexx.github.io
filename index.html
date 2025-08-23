@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Limpieza del Aula 23 5A</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #0a0a2a 0%, #1c1c4a 100%);
+            color: #e6faff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('nebula-bg.png') repeat;
+            opacity: 0.2;
+            z-index: -1;
+            animation: nebulaShift 30s linear infinite;
+        }
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .login-box {
+            background: rgba(10, 10, 50, 0.95);
+            border: 2px solid #00e4ff;
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 0 50px rgba(0, 228, 255, 0.7);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            animation: cosmicFade 1s ease-out;
+        }
+        .login-box h2 {
+            font-size: 2.8rem;
+            text-shadow: 0 0 15px #00e4ff;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #00e4ff, #ff00e6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .login-box input[type="text"], .login-box input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border: 1px solid #00e4ff;
+            background: rgba(20, 20, 60, 0.9);
+            color: #e6faff;
+            font-size: 1.1rem;
+            box-shadow: 0 0 15px rgba(0, 228, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+        .login-box input:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(0, 228, 255, 0.8);
+            border-color: #ff00e6;
+        }
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #00e4ff, #ff00e6);
+            color: #0a0a2a;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 228, 255, 0.6);
+        }
+        .login-box button:hover {
+            background: linear-gradient(45deg, #ff00e6, #ffd700);
+            box-shadow: 0 0 25px rgba(255, 0, 230, 0.8);
+            transform: translateY(-2px);
+        }
+        .error {
+            color: #ff4d4d;
+            margin-top: 15px;
+            font-size: 1rem;
+            text-shadow: 0 0 5px #ff4d4d;
+            display: none;
+        }
+        .login-container.hidden {
+            display: none;
+        }
+        .main-content {
+            display: none;
+        }
+        .main-content.active {
+            display: block;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 60px 0;
+            animation: cosmicPulse 1.8s ease-in-out infinite alternate;
+        }
+        h1 {
+            font-size: 5rem;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            text-shadow: 0 0 30px #00e4ff, 0 0 60px #ff00e6, 0 0 90px #ffd700;
+            background: linear-gradient(45deg, #00e4ff, #ff00e6, #ffd700, #00ff9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textFlow 5s linear infinite;
+        }
+        .hamburger {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 30px;
+            cursor: pointer;
+            z-index: 1001;
+            transition: transform 0.3s ease;
+        }
+        .hamburger:hover {
+            transform: scale(1.3);
+        }
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 5px;
+            background: #00e4ff;
+            margin: 5px 0;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px #00e4ff;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+        .nav-menu {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(10, 10, 50, 0.98);
+            border: 2px solid #00e4ff;
+            border-radius: 15px;
+            padding: 15px;
+            z-index: 1000;
+            box-shadow: 0 0 40px rgba(0, 228, 255, 0.7);
+            backdrop-filter: blur(8px);
+        }
+        .nav-menu.active {
+            display: block;
+        }
+        .nav-menu a {
+            display: block;
+            color: #00e4ff;
+            text-decoration: none;
+            font-size: 1.3rem;
+            padding: 12px;
+            margin: 5px 0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 8px #00e4ff;
+        }
+        .nav-menu a:hover {
+            background: linear-gradient(45deg, #00e4ff, #ff00e6);
+            color: #0a0a2a;
+            box-shadow: 0 0 20px #00e4ff;
+        }
+        .section {
+            background: rgba(20, 20, 60, 0.92);
+            border: 2px solid #00e4ff;
+            border-radius: 20px;
+            margin: 30px 0;
+            padding: 30px;
+            position: relative;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+            display: none;
+            box-shadow: 0 0 40px rgba(0, 228, 255, 0.5);
+            backdrop-filter: blur(10px);
+        }
+        .section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: cosmicFade 1s ease-out;
+        }
+        .section-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .section-text {
+            flex: 1;
+        }
+        .section-text h2 {
+            font-size: 2.2rem;
+            text-shadow: 0 0 12px #00e4ff;
+        }
+        .section-text p {
+            font-size: 1.2rem;
+            line-height: 1.7;
+        }
+        .section-media {
+            flex: 1;
+            text-align: center;
+        }
+        .section-media img {
+            max-width: 100%;
+            border-radius: 15px;
+            border: 1px solid #00e4ff;
+            box-shadow: 0 0 20px rgba(0, 228, 255, 0.6);
+            transition: transform 0.3s ease;
+        }
+        .section-media img:hover {
+            transform: scale(1.1);
+        }
+        .gear {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: url('gear-futuristic.png') no-repeat center;
+            background-size: contain;
+            cursor: pointer;
+            animation: cosmicSpin 3.5s linear infinite;
+            filter: drop-shadow(0 0 12px #00e4ff);
+        }
+        .gear:hover + .popup {
+            display: block;
+        }
+        .popup {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 15px;
+            background: linear-gradient(45deg, #00e4ff, #ff00e6);
+            color: #0a0a2a;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            box-shadow: 0 0 25px rgba(0, 228, 255, 0.9);
+            z-index: 10;
+        }
+        .customizer-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 30px;
+            cursor: pointer;
+            z-index: 1001;
+            transition: transform 0.3s ease;
+        }
+        .customizer-toggle:hover {
+            transform: scale(1.3);
+        }
+        .customizer-toggle span {
+            display: block;
+            width: 100%;
+            height: 5px;
+            background: #00e4ff;
+            margin: 5px 0;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px #00e4ff;
+        }
+        .customizer-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+        .customizer-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .customizer-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+        .customizer {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 20px;
+            background: rgba(10, 10, 50, 0.98);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #00e4ff;
+            box-shadow: 0 0 25px rgba(0, 228, 255, 0.6);
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+        }
+        .customizer.active {
+            display: block;
+        }
+        .customizer label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            text-shadow: 0 0 8px #00e4ff;
+        }
+        .customizer input[type="color"],
+        .customizer select {
+            width: 100%;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #00e4ff;
+            background: #0a0a2a;
+            color: #e6faff;
+            box-shadow: 0 0 12px rgba(0, 228, 255, 0.6);
+        }
+        .cloud-assistant {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            background: url('cloud-assistant.png') no-repeat center;
+            background-size: contain;
+            cursor: pointer;
+            animation: cosmicFloat 2.8s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px #00e4ff);
+            z-index: 1001;
+            display: block;
+        }
+        .cloud-assistant:hover + .assistant-popup {
+            display: block;
+        }
+        .assistant-popup {
+            display: none;
+            position: fixed;
+            bottom: 110px;
+            right: 20px;
+            background: rgba(10, 10, 50, 0.98);
+            border: 2px solid #00e4ff;
+            border-radius: 15px;
+            padding: 15px;
+            max-width: 250px;
+            font-size: 0.9rem;
+            box-shadow: 0 0 25px rgba(0, 228, 255, 0.6);
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+        }
+        .assistant-popup.active {
+            display: block;
+        }
+        .assistant-popup button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background: linear-gradient(45deg, #00e4ff, #ff00e6);
+            color: #0a0a2a;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 12px rgba(0, 228, 255, 0.6);
+        }
+        .assistant-popup button:hover {
+            background: linear-gradient(45deg, #ff00e6, #ffd700);
+            box-shadow: 0 0 20px #ff00e6;
+        }
+        .cloud-search {
+            position: fixed;
+            top: 20px;
+            left: 80px;
+            width: 50px;
+            height: 50px;
+            background: url('cloud-search.png') no-repeat center;
+            background-size: contain;
+            cursor: pointer;
+            animation: cosmicFloat 2.5s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px #00e4ff);
+            z-index: 1001;
+            display: block;
+        }
+        .cloud-search:hover + .search-popup {
+            display: block;
+        }
+        .search-popup {
+            display: none;
+            position: fixed;
+            top: 80px;
+            left: 80px;
+            background: rgba(10, 10, 50, 0.98);
+            border: 2px solid #00e4ff;
+            border-radius: 15px;
+            padding: 15px;
+            width: 250px;
+            box-shadow: 0 0 25px rgba(0, 228, 255, 0.6);
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+        }
+        .search-popup.active {
+            display: block;
+        }
+        .search-popup input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #00e4ff;
+            background: #0a0a2a;
+            color: #e6faff;
+            font-size: 1rem;
+            box-shadow: 0 0 12px rgba(0, 228, 255, 0.6);
+        }
+        @keyframes cosmicPulse {
+            0% { text-shadow: 0 0 10px #00e4ff, 0 0 20px #00e4ff, 0 0 30px #00e4ff; }
+            100% { text-shadow: 0 0 20px #00e4ff, 0 0 40px #ff00e6, 0 0 60px #ffd700; }
+        }
+        @keyframes cosmicSpin {
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes cosmicFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes nebulaShift {
+            0% { background-position: 0 0; }
+            100% { background-position: 1200px 1200px; }
+        }
+        @keyframes cosmicFade {
+            from { opacity: 0; transform: translateY(100px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes textFlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+        .click-info {
+            display: none;
+            position: absolute;
+            background: linear-gradient(45deg, #00e4ff, #ff00e6);
+            color: #0a0a2a;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 228, 255, 0.8);
+            z-index: 10;
+            font-size: 0.9rem;
+        }
+        .highlight {
+            background: linear-gradient(45deg, #ffd700, #ff00e6, #00e4ff);
+            color: #0a0a2a;
+            text-align: center;
+            font-weight: bold;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 30px 0;
+            display: none;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+            text-shadow: 0 0 8px #00e4ff;
+        }
+        .highlight.active {
+            display: block;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="login-container" id="loginContainer">
+        <div class="login-box">
+            <h2>Iniciar Sesión</h2>
+            <input type="text" id="username" placeholder="Usuario" required>
+            <input type="password" id="password" placeholder="Contraseña" required>
+            <button onclick="login()">Iniciar Sesión</button>
+            <p class="error" id="error">Usuario o contraseña incorrectos</p>
+        </div>
+    </div>
+    <div class="main-content" id="mainContent">
+        <div class="customizer-toggle" onclick="toggleCustomizer()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="customizer" id="customizer">
+            <label for="bgColor">Color de Fondo:</label>
+            <input type="color" id="bgColor" value="#0a0a2a">
+            <label for="theme">Tema:</label>
+            <select id="theme">
+                <option value="neon">Neón</option>
+                <option value="dark">Oscuro</option>
+                <option value="cyber">Cyberpunk</option>
+            </select>
+        </div>
+        <div class="hamburger" onclick="toggleNav()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-menu" id="navMenu">
+            <a href="#" onclick="showSection('inicio')">Inicio</a>
+            <a href="#" onclick="showSection('lunes')">Lunes</a>
+            <a href="#" onclick="showSection('martes')">Martes</a>
+            <a href="#" onclick="showSection('miercoles')">Miércoles</a>
+            <a href="#" onclick="showSection('jueves')">Jueves</a>
+            <a href="#" onclick="showSection('viernes')">Viernes</a>
+        </div>
+        <div class="cloud-assistant" onclick="toggleAssistant()"></div>
+        <div class="assistant-popup" id="assistantPopup">
+            <p>¿Listo para organizar la limpieza?</p>
+            <button onclick="suggest('inicio')">Explora el Inicio</button>
+            <button onclick="suggest('lunes')">Ver Lunes</button>
+            <button onclick="suggest('martes')">Ver Martes</button>
+            <button onclick="suggest('miercoles')">Ver Miércoles</button>
+            <button onclick="suggest('jueves')">Ver Jueves</button>
+            <button onclick="suggest('viernes')">Ver Viernes</button>
+        </div>
+        <div class="cloud-search" onclick="toggleSearch()"></div>
+        <div class="search-popup" id="searchPopup">
+            <input type="text" id="searchInput" placeholder="Busca días..." oninput="searchSections()" onblur="setTimeout(toggleSearch, 5000)">
+        </div>
+        <div class="container">
+            <div class="header">
+                <h1>Limpieza 5A</h1>
+            </div>
+            <div class="section active" id="inicio">
+                <div class="gear" onclick="showInfo('inicio-info')"></div>
+                <div class="popup">Explora el plan de limpieza.</div>
+                <div class="click-info" id="inicio-info">Organización semanal para el aula 23 5A.</div>
+                <div class="section-content">
+                    <div class="section-text">
+                        <h2>Inicio</h2>
+                        <p>Queridos compañeros, en esta página web encontrarán las listas de lunes a viernes, donde se detalla quiénes se quedan a limpiar y quiénes no, según el día correspondiente.</p>
+                    </div>
+                    <div class="section-media">
+                        <img src="6.jpeg" alt="Organización de limpieza">
+                    </div>
+                </div>
+            </div>
+            <div class="section" id="lunes">
+                <div class="gear" onclick="showInfo('lunes-info')"></div>
+                <div class="popup">Limpieza del lunes.</div>
+                <div class="click-info" id="lunes-info">Responsables del lunes.</div>
+                <div class="section-content">
+                    <div class="section-text">
+                        <h2>Lunes</h2>
+                        <p>Responsables de limpieza: [Lista de nombres]. Tareas: barrer, ordenar las sillas y mesas. Los demás están exentos este día.</p>
+                    </div>
+                    <div class="section-media">
+                        <img src="1.jpg" alt="Limpieza del lunes">
+                    </div>
+                </div>
+            </div>
+            <div class="section" id="martes">
+                <div class="gear" onclick="showInfo('martes-info')"></div>
+                <div class="popup">Limpieza del martes.</div>
+                <div class="click-info" id="martes-info">Responsables del martes.</div>
+                <div class="section-content">
+                    <div class="section-text">
+                        <h2>Martes</h2>
+                        <p>Responsables de limpieza: [Lista de nombres]. Tareas: barrer, ordenar las sillas y mesas. Los demás están exentos este día.</p>
+                    </div>
+                    <div class="section-media">
+                        <img src="2.jpg" alt="Limpieza del martes">
+                    </div>
+                </div>
+            </div>
+            <div class="section" id="miercoles">
+                <div class="gear" onclick="showInfo('miercoles-info')"></div>
+                <div class="popup">Limpieza del miércoles.</div>
+                <div class="click-info" id="miercoles-info">Responsables del miércoles.</div>
+                <div class="section-content">
+                    <div class="section-text">
+                        <h2>Miércoles</h2>
+                        <p>Responsables de limpieza: [Lista de nombres]. Tareas: barrer, ordenar las sillas y mesas. Los demás están exentos este día.</p>
+                    </div>
+                    <div class="section-media">
+                        <img src="3.jpg" alt="Limpieza del miércoles">
+                    </div>
+                </div>
+            </div>
+            <div class="section" id="jueves">
+                <div class="gear" onclick="showInfo('jueves-info')"></div>
+                <div class="popup">Limpieza del jueves.</div>
+                <div class="click-info" id="jueves-info">Responsables del jueves.</div>
+                <div class="section-content">
+                    <div class="section-text">
+                        <h2>Jueves</h2>
+                        <p>Responsables de limpieza: [Lista de nombres]. Tareas: barrer, ordenar las sillas y mesas. Los demás están exentos este día.</p>
+                    </div>
+                    <div class="section-media">
+                        <img src="4.jpg" alt="Limpieza del jueves">
+                    </div>
+                </div>
+            </div>
+            <div class="section" id="viernes">
+                <div class="gear" onclick="showInfo('viernes-info')"></div>
+                <div class="popup">Limpieza del viernes.</div>
+                <div class="click-info" id="viernes-info">Responsables del viernes.</div>
+                <div class="section-content">
+                    <div class="section-text">
+                        <h2>Viernes</h2>
+                        <p>Responsables de limpieza: [Lista de nombres]. Tareas: barrer, ordenar las sillas y mesas. Los demás están exentos este día.</p>
+                    </div>
+                    <div class="section-media">
+                        <img src="5.jpg" alt="Limpieza del viernes">
+                    </div>
+                </div>
+            </div>
+            <div class="highlight active">
+                <p>¡Un espacio limpio es una mente clara, ordena tu vida!</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('bgColor').addEventListener('input', e => {
+                document.body.style.background = e.target.value;
+                toggleCustomizer();
+            });
+            document.getElementById('theme').addEventListener('change', e => {
+                const theme = e.target.value;
+                if (theme === 'dark') {
+                    document.body.style.background = 'linear-gradient(135deg, #000022 0%, #1a1a3d 100%)';
+                } else if (theme === 'cyber') {
+                    document.body.style.background = 'linear-gradient(135deg, #ff00cc 0%, #3333ff 100%)';
+                } else {
+                    document.body.style.background = 'linear-gradient(135deg, #0a0a2a 0%, #1c1c4a 100%)';
+                }
+                toggleCustomizer();
+            });
+        });
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const error = document.getElementById('error');
+            const loginContainer = document.getElementById('loginContainer');
+            const mainContent = document.getElementById('mainContent');
+
+            const validUser = "Estudiante del 5A";
+            const validPass = "limpieza";
+
+            if (username === validUser && password === validPass) {
+                loginContainer.classList.add('hidden');
+                mainContent.classList.add('active');
+            } else {
+                error.style.display = 'block';
+            }
+        }
+
+        function toggleNav() {
+            const nav = document.getElementById('navMenu');
+            const hamburger = document.querySelector('.hamburger');
+            nav.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        function toggleCustomizer() {
+            const customizer = document.getElementById('customizer');
+            const toggle = document.querySelector('.customizer-toggle');
+            customizer.classList.toggle('active');
+            toggle.classList.toggle('active');
+        }
+
+        function toggleAssistant() {
+            const assistant = document.getElementById('assistantPopup');
+            assistant.classList.toggle('active');
+        }
+
+        function toggleSearch() {
+            const search = document.getElementById('searchPopup');
+            search.classList.toggle('active');
+            document.getElementById('searchInput').focus();
+        }
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            const highlight = document.querySelector('.highlight');
+            sections.forEach(section => {
+                section.classList.remove('active');
+                section.style.display = 'none';
+            });
+            highlight.classList.remove('active');
+            highlight.style.display = 'none';
+            const targetSection = document.getElementById(sectionId);
+            targetSection.style.display = 'block';
+            targetSection.classList.add('active');
+            highlight.style.display = 'block';
+            highlight.classList.add('active');
+            targetSection.scrollIntoView({ behavior: 'smooth' });
+            toggleNav();
+        }
+
+        function suggest(section) {
+            showSection(section);
+            toggleAssistant();
+        }
+
+        function showInfo(id) {
+            const info = document.getElementById(id);
+            info.style.display = 'block';
+            setTimeout(() => { info.style.display = 'none'; }, 3000);
+        }
+
+        function searchSections() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const sections = document.querySelectorAll('.section');
+            const highlight = document.querySelector('.highlight');
+            sections.forEach(section => {
+                const title = section.querySelector('h2').textContent.toLowerCase();
+                if (title.includes(input)) {
+                    section.style.display = 'block';
+                    section.classList.add('active');
+                    highlight.style.display = 'block';
+                    highlight.classList.add('active');
+                } else {
+                    section.style.display = 'none';
+                    section.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
